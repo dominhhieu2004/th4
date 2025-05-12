@@ -16,6 +16,17 @@ namespace th4.Infrastructure
                 .HasMany(s => s.Comments)
                 .WithOne(c => c.Stock)
                 .HasForeignKey(c => c.StockId);
+
+            modelBuilder.Entity<Comments>()
+                .HasKey(c => c.Id);           //Khai báo Id là khóa chính của bảng Comments.
+
+            modelBuilder.Entity<Comments>()
+                .HasOne(c => c.Stock)                     //Mỗi Comment liên kết đến một Stock(cổ phiếu).
+                .WithMany(s => s.Comments)                //Một Stock có thể có nhiều Comments.
+                .HasForeignKey(c => c.StockId)            //Nếu Stock bị xóa → các comment liên quan cũng bị xóa(Cascade Delete).
+                .OnDelete(DeleteBehavior.Cascade);         
+                                                                                              
+
         }
     }
     
